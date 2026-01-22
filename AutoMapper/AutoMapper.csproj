@@ -43,6 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\Effect.cs" />
+    <Compile Include="Enums\EffectDTO.cs" />
+    <Compile Include="Mapper.cs" />
+    <Compile Include="Models\CardModel.cs" />
+    <Compile Include="Models\CardViewModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
