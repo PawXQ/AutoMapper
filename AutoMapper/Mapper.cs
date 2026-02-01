@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -19,19 +20,138 @@ namespace AutoMapper
             foreach (PropertyInfo prop in sourceProps)
             {
                 PropertyInfo propertyInfo = destinationType.GetProperty(prop.Name);
+                Type destType = propertyInfo.PropertyType;
+
                 string propValueString = prop.GetValue(source)?.ToString();
+
 
                 if (propValueString == null) continue;
                 if (propertyInfo == null) continue;
 
-
                 if (propertyInfo.PropertyType == typeof(string)) { propertyInfo.SetValue(destination, propValueString); continue; }
-                if (propertyInfo.PropertyType == typeof(float)) { propertyInfo.SetValue(destination, float.Parse(propValueString)); continue; }
-                if (propertyInfo.PropertyType == typeof(double)) { propertyInfo.SetValue(destination, double.Parse(propValueString)); continue; }
-                if (propertyInfo.PropertyType == typeof(long)) { propertyInfo.SetValue(destination, long.Parse(propValueString)); continue; }
-                if (propertyInfo.PropertyType == typeof(decimal)) { propertyInfo.SetValue(destination, decimal.Parse(propValueString)); continue; }
-
                 if (propertyInfo.PropertyType.IsEnum) { propertyInfo.SetValue(destination, Enum.Parse(propertyInfo.PropertyType, propValueString)); continue; }
+
+                if (propertyInfo.PropertyType == typeof(float) ||
+                    propertyInfo.PropertyType == typeof(double) ||
+                    propertyInfo.PropertyType == typeof(long) ||
+                    propertyInfo.PropertyType == typeof(decimal))
+                {
+                    var parseMethod = destType.GetMethod("Parse", new Type[] { typeof(string) });
+                    propertyInfo.SetValue(destination, parseMethod.Invoke(null, new object[] { propValueString }));
+                    continue;
+                }
+
+                //if (propertyInfo.PropertyType == typeof(float)) { propertyInfo.SetValue(destination, float.Parse(propValueString)); continue; }
+                //if (propertyInfo.PropertyType == typeof(double)) { propertyInfo.SetValue(destination, double.Parse(propValueString)); continue; }
+                //if (propertyInfo.PropertyType == typeof(long)) { propertyInfo.SetValue(destination, long.Parse(propValueString)); continue; }
+                //if (propertyInfo.PropertyType == typeof(decimal)) { propertyInfo.SetValue(destination, decimal.Parse(propValueString)); continue; }
+
+                var tmp = prop.PropertyType.GetInterfaces();
+
+                Console.WriteLine(prop.PropertyType);
+
+                bool isStack = prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(Stack<>);
+                if (isStack)
+                {
+                    Type typeDefinition = destType.GetGenericTypeDefinition();
+                    Type[] typeArguments = destType.GetGenericArguments();
+                    Type genericType = typeArguments[0];
+
+                    MethodInfo genericMethod = genericType.GetMethod("Parse", new Type[] { typeof(string) });
+
+                    var genericListType = typeDefinition.MakeGenericType(typeArguments);
+
+                    object genericTypes = Activator.CreateInstance(genericListType);
+
+                    MethodInfo enumeratorMethodType = prop.PropertyType.GetMethod("GetEnumerator");
+                    IEnumerator enumerator = (IEnumerator)enumeratorMethodType.Invoke(prop.GetValue(source), null);
+
+                    MethodInfo typeDefinitionPushMethod = genericTypes.GetType().GetMethod("Push", new Type[] { genericType });
+
+                    while (enumerator.MoveNext())
+                    {
+                        typeDefinitionPushMethod.Invoke(genericTypes, new object[] { genericMethod.Invoke(null, new object[] { enumerator.Current }) });
+                    }
+                    propertyInfo.SetValue(destination, genericTypes);
+                    continue;
+                };
+
+                bool isQueue = prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(Queue<>);
+                if (isQueue)
+                {
+                    Type typeDefinition = destType.GetGenericTypeDefinition();
+                    Type[] typeArguments = destType.GetGenericArguments();
+                    Type genericType = typeArguments[0];
+
+                    MethodInfo genericMethod = genericType.GetMethod("Parse", new Type[] { typeof(string) });
+
+                    var genericListType = typeDefinition.MakeGenericType(typeArguments);
+
+                    object genericTypes = Activator.CreateInstance(genericListType);
+
+                    MethodInfo enumeratorMethodType = prop.PropertyType.GetMethod("GetEnumerator");
+                    IEnumerator enumerator = (IEnumerator)enumeratorMethodType.Invoke(prop.GetValue(source), null);
+
+                    MethodInfo typeDefinitionEnqueqeMethod = genericTypes.GetType().GetMethod("Enqueue", new Type[] { genericType });
+
+                    while (enumerator.MoveNext())
+                    {
+                        typeDefinitionEnqueqeMethod.Invoke(genericTypes, new object[] { genericMethod.Invoke(null, new object[] { enumerator.Current }) });
+                    }
+                    propertyInfo.SetValue(destination, genericTypes);
+                    continue;
+                };
+
+                bool isArray = prop.PropertyType.GetInterfaces().Any(x => x == typeof(IList)) && prop.PropertyType.IsArray;
+                if (isArray)
+                {
+                    var sourceArray = (Array)prop.GetValue(source);
+
+                    Type sourceElementType = sourceArray.GetType().GetElementType();
+
+                    Array destArray = Array.CreateInstance(destType.GetElementType(), sourceArray.Length);
+
+                    MethodInfo parseMethod = destType.GetElementType().GetMethod("Parse", new Type[] { typeof(string) });
+
+                    for (int i = 0; i < sourceArray.Length; i++)
+                    {
+                        destArray.SetValue(parseMethod.Invoke(null, new object[] { sourceArray.GetValue(i) }), i);
+                    }
+                    propertyInfo.SetValue(destination, destArray);
+
+                    continue;
+                }
+
+
+                bool isIList = prop.PropertyType.GetInterfaces().Any(x => x == typeof(IList)) && !prop.PropertyType.IsArray;
+                //bool isIList = prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(List<>);
+                if (isIList)
+                {
+                    Type TypeDefinition = destType.GetGenericTypeDefinition();
+                    Type[] typeArguments = destType.GetGenericArguments();
+                    Type genericType = typeArguments[0];
+
+                    MethodInfo genericMethod = genericType.GetMethod("Parse", new Type[] { typeof(string) });
+
+                    var genericListType = TypeDefinition.MakeGenericType(typeArguments);
+
+                    IList genericTypes = (IList)Activator.CreateInstance(genericListType);
+                    //object genericTypes = Activator.CreateInstance(genericListType);
+
+                    MethodInfo enumeratorMethodType = prop.PropertyType.GetMethod("GetEnumerator");
+                    IEnumerator enumerator = (IEnumerator)enumeratorMethodType.Invoke(prop.GetValue(source), null);
+
+                    //MethodInfo typeDefinitionAddMethod = genericTypes.GetType().GetMethod("Add", new Type[] { genericType });
+
+                    while (enumerator.MoveNext())
+                    {
+                        genericTypes.Add(genericMethod.Invoke(null, new object[] { enumerator.Current }));
+                        //typeDefinitionAddMethod.Invoke(genericTypes, new object[] { genericMethod.Invoke(null, new object[] { enumerator.Current }) });
+
+                    }
+                    propertyInfo.SetValue(destination, genericTypes);
+                    continue;
+                }
 
                 propertyInfo.SetValue(destination, prop.GetValue(source));
             }
