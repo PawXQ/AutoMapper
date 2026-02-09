@@ -45,14 +45,26 @@
   <ItemGroup>
     <Compile Include="Enums\Effect.cs" />
     <Compile Include="Enums\EffectDTO.cs" />
+    <Compile Include="Enums\TypeEnum.cs" />
+    <Compile Include="Extensions\TypeExtension.cs" />
     <Compile Include="Mapper.cs" />
+    <None Include="Mapper.cs.bak" />
     <Compile Include="Models\CardModel.cs" />
     <Compile Include="Models\CardViewModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TypesMapping\ArrayTypeMapping.cs" />
+    <Compile Include="TypesMapping\ATypeMapping.cs" />
+    <Compile Include="TypesMapping\BasicTypeMapping.cs" />
+    <Compile Include="TypesMapping\ClassTypeMapping.cs" />
+    <Compile Include="TypesMapping\EnumTypeMapping.cs" />
+    <Compile Include="TypesMapping\IEnumerableTypeMapping.cs" />
+    <Compile Include="TypesMapping\QueueTypeMapping.cs" />
+    <Compile Include="TypesMapping\StackTypeMapping.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
