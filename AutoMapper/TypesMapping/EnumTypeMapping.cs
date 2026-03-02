@@ -8,7 +8,7 @@ namespace AutoMapper.TypesMapping
 {
     internal class EnumTypeMapping : ATypeMapping
     {
-        public override object TypeConversion(object sourceData, Type souceType, Type destType)
+        public override object TypeConversion(object sourceData, Type sourceType, Type destType)
         {
             string sourceDataString = sourceData.ToString();
 

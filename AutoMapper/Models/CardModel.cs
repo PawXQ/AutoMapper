@@ -19,9 +19,10 @@ namespace AutoMapper.Models
         public string Effect_3 { get; set; }
         public int Effect_4 { get; set; }
         public Effect Effect_5 { get; set; }
-        public List<string> Crystals { get; set; }
-        public string[] Crystals2 { get; set; }
-        public Stack<string> Crystals3 { get; set; }
-        public Queue<string> Crystals4 { get; set; }
+        //public List<Effect> Crystals { get; set; }
+        //public int[] Crystals2 { get; set; }
+        //public Stack<Effect> Crystals3 { get; set; }
+        //public Queue<Effect> Crystals4 { get; set; }
+        //public AClass Crystals5 { get; set; } = new AClass();
     }
 }

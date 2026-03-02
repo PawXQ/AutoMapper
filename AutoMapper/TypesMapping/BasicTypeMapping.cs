@@ -10,14 +10,14 @@ namespace AutoMapper.TypesMapping
     internal class BasicTypeMapping : ATypeMapping
     {
         List<Type> numTypes = new List<Type>() { typeof(int), typeof(long), typeof(double) };
-        public override object TypeConversion(object sourceData, Type souceType, Type destType)
+        public override object TypeConversion(object sourceData, Type sourceType, Type destType)
         {
             string sourceDataString = sourceData.ToString();
 
             if (destType == typeof(string)) return sourceDataString;
             //if (destType.IsEnum) return Enum.Parse(destType, sourceDataString);
 
-            if (souceType.IsEnum && numTypes.Any(x => x == destType))
+            if (sourceType.IsEnum && numTypes.Any(x => x == destType))
             {
                 return Convert.ChangeType(sourceData, destType);
             }

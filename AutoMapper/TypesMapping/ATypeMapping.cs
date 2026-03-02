@@ -8,6 +8,6 @@ namespace AutoMapper.TypesMapping
 {
     internal abstract class ATypeMapping
     {
-        public abstract object TypeConversion(object sourceData, Type souceType, Type destType);
+        public abstract object TypeConversion(object sourceData, Type sourceType, Type destType);
     }
 }

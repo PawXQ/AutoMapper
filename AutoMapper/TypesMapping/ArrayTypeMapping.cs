@@ -9,19 +9,19 @@ namespace AutoMapper.TypesMapping
 {
     internal class ArrayTypeMapping : ATypeMapping
     {
-        public override object TypeConversion(object sourceData, Type souceType, Type destType)
+        public override object TypeConversion(object sourceData, Type sourceType, Type destType)
         {
             var sourceArray = (Array)sourceData;
+            Type destGenericType = destType.GetElementType();
 
-            Type souceElementType = sourceArray.GetType().GetElementType();
+            Array destArray = Array.CreateInstance(destGenericType, sourceArray.Length);
 
-            Array destArray = Array.CreateInstance(destType.GetElementType(), sourceArray.Length);
-
-            MethodInfo parseMethod = destType.GetElementType().GetMethod("Parse", new Type[] { typeof(string) });
+            //MethodInfo parseMethod = destType.GetElementType().GetMethod("Parse", new Type[] { typeof(string) });
 
             for (int i = 0; i < sourceArray.Length; i++)
             {
-                destArray.SetValue(parseMethod.Invoke(null, new object[] { sourceArray.GetValue(i) }), i);
+                //destArray.SetValue(parseMethod.Invoke(null, new object[] { sourceArray.GetValue(i) }), i);
+                destArray.SetValue(Mapper.MapCallback(sourceArray.GetValue(i), destGenericType), i);
             }
 
             return destArray;
