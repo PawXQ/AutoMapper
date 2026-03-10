@@ -17,7 +17,6 @@ namespace AutoMapper
     {
         public static TDestination Map<Tsource, TDestination>(Tsource source, Action<MapperConfiguration<Tsource, TDestination>> callback) where TDestination : class, new()
         {
-            PropertyInfo sourceTypePropertyInfo = null;
             TDestination destination = new TDestination();
 
             PropertyInfo[] destProps = typeof(TDestination).GetProperties();
@@ -30,23 +29,16 @@ namespace AutoMapper
             {
                 Type destProptyType = prop.PropertyType;
 
-                var result = mapperConfiguration.memberExpressionkeyValuePairs.FirstOrDefault(x =>
-                {
-                    string name = x.Value.Member.Name;
-                    PropertyInfo propertyInfo = typeof(TDestination).GetProperty(name);
 
-                    return propertyInfo == prop;
-                });
-
-                if (result.Key != null)
+                PropertyInfo sourceTypePropertyInfo = sourceType.GetProperty(prop.Name);
+                if (mapperConfiguration.propertyInfoMemberExpressionkeyValuePairs.TryGetValue(prop, out MemberExpression soureExpression))
                 {
-                    sourceTypePropertyInfo = typeof(Tsource).GetProperty(result.Key.Member.Name);
-                    mapperConfiguration.memberExpressionkeyValuePairs.Remove(result.Key);
+                    sourceTypePropertyInfo = (PropertyInfo)mapperConfiguration.propertyInfoMemberExpressionkeyValuePairs[prop].Member;
                 }
-                else
-                {
-                    sourceTypePropertyInfo = sourceType.GetProperty(prop.Name);
-                };
+
+                //PropertyInfo sourceTypePropertyInfo = mapperConfiguration.propertyInfoMemberExpressionkeyValuePairs.ContainsKey(prop) ?
+                //                                      (PropertyInfo)mapperConfiguration.propertyInfoMemberExpressionkeyValuePairs[prop].Member :
+                //                                      sourceType.GetProperty(prop.Name);
 
                 Type sourceTypePropertyInfoType = sourceTypePropertyInfo.PropertyType;
 
