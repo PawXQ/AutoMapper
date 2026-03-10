@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -14,29 +15,50 @@ namespace AutoMapper
 {
     internal class Mapper
     {
-        public static TDestination Map<Tsource, TDestination>(Tsource source) where TDestination : class, new()
+        public static TDestination Map<Tsource, TDestination>(Tsource source, Action<MapperConfiguration<Tsource, TDestination>> callback) where TDestination : class, new()
         {
+            PropertyInfo sourceTypePropertyInfo = null;
             TDestination destination = new TDestination();
 
-            PropertyInfo[] sourceProps = typeof(Tsource).GetProperties();
-            Type destinationType = typeof(TDestination);
+            PropertyInfo[] destProps = typeof(TDestination).GetProperties();
+            Type sourceType = typeof(Tsource);
 
-            foreach (PropertyInfo prop in sourceProps)
+            MapperConfiguration<Tsource, TDestination> mapperConfiguration = new MapperConfiguration<Tsource, TDestination>();
+            callback.Invoke(mapperConfiguration);
+
+            foreach (PropertyInfo prop in destProps)
             {
-                Type sourcePropType = prop.PropertyType;
+                Type destProptyType = prop.PropertyType;
 
-                PropertyInfo propertyInfo = destinationType.GetProperty(prop.Name);
-                Type destType = propertyInfo.PropertyType;
+                var result = mapperConfiguration.memberExpressionkeyValuePairs.FirstOrDefault(x =>
+                {
+                    string name = x.Value.Member.Name;
+                    PropertyInfo propertyInfo = typeof(TDestination).GetProperty(name);
 
-                TypeEnum destTypeEnum = destType.RecornizeType();
+                    return propertyInfo == prop;
+                });
+
+                if (result.Key != null)
+                {
+                    sourceTypePropertyInfo = typeof(Tsource).GetProperty(result.Key.Member.Name);
+                    mapperConfiguration.memberExpressionkeyValuePairs.Remove(result.Key);
+                }
+                else
+                {
+                    sourceTypePropertyInfo = sourceType.GetProperty(prop.Name);
+                };
+
+                Type sourceTypePropertyInfoType = sourceTypePropertyInfo.PropertyType;
+
+                TypeEnum destTypeEnum = destProptyType.RecornizeType();
 
                 Type destTypeMapping = Type.GetType($"AutoMapper.TypesMapping.{destTypeEnum}Mapping");
                 ATypeMapping aTypeMapping = (ATypeMapping)Activator.CreateInstance(destTypeMapping);
 
-                var result = aTypeMapping.TypeConversion(prop.GetValue(source), sourcePropType, destType);
+                var typeConversionResult = aTypeMapping.TypeConversion(sourceTypePropertyInfo.GetValue(source), sourceTypePropertyInfoType, destProptyType);
                 // 轉換 Tsource.X => TDestination.y return propertyinfo
                 // 找 TDestination property index
-                propertyInfo.SetValue(destination, result);
+                prop.SetValue(destination, typeConversionResult);
             }
 
             return destination;

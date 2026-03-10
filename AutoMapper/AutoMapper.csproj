@@ -49,6 +49,7 @@
     <Compile Include="Extensions\TypeExtension.cs" />
     <Compile Include="Mapper.cs" />
     <None Include="Mapper.cs.bak" />
+    <Compile Include="MapperConfiguration.cs" />
     <Compile Include="Models\AClass.cs" />
     <Compile Include="Models\BClass.cs" />
     <Compile Include="Models\CardModel.cs" />

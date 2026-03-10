@@ -42,14 +42,14 @@ namespace AutoMapper
             var cardModel = new CardModel();
             cardModel.Id = 1;
             cardModel.Name = "a";
-            cardModel.Desc = "aaa";
-            cardModel.Attack = 10.123456789101112131415m;
-            cardModel.Defense = 12345678910111213;
-            cardModel.Effect_1 = Effect.angry;
-            cardModel.Effect_2 = Effect.poison;
-            cardModel.Effect_3 = "windfury";
-            cardModel.Effect_4 = ((int)Effect.Battlecry);
-            cardModel.Effect_5 = Effect.DivineShield;
+            //cardModel.Desc = "aaa";
+            //cardModel.Attack = 10.123456789101112131415m;
+            //cardModel.Defense = 12345678910111213;
+            //cardModel.Effect_1 = Effect.angry;
+            //cardModel.Effect_2 = Effect.poison;
+            //cardModel.Effect_3 = "windfury";
+            //cardModel.Effect_4 = ((int)Effect.Battlecry);
+            //cardModel.Effect_5 = Effect.DivineShield;
             //cardModel.Crystals = new List<Effect> { Effect.angry, Effect.poison };
             //cardModel.Crystals2 = new int[] { 1, 2 };
             //cardModel.Crystals3 = new Stack<Effect>(new Effect[] { Effect.angry, Effect.poison });
@@ -57,8 +57,56 @@ namespace AutoMapper
             //cardModel.Crystals5 = new AClass() { ConverClass = new CClass() { Id = 1, Crystals = new List<string> { "1", "2" } } };
 
 
+            //var data = Mapper.Map<CardModel, CardViewModel>(cardModel);
+            var data = Mapper.Map<CardModel, CardViewModel>(cardModel, x =>
+            {
+                x.ForMember(y => y.Id, z => z.Id)
+                 .ForMember(y => y.Name, z => z.Desc)
+                 .ForMember(y => y.Name, z => z.Desc2);
+            });
+
+            //var data = Mapper.Map<CardModel, CardViewModel>(cardModel,cfg=>{
+            //
+            //      cfg.ForMember(x.id,y.ID)
+            //         .ForMember(x.name,y.CardName)
+            //
+            //})
 
             //List<int> ints = new List<int>();
+            //ints.OrderBy(i => i).ToList();
+            bool a = false;
+            int b = 20;
+            //GetCard(data, x => x.Id);
         }
+
+
+
+        private static void GetCard<T>(CardViewModel viewModel, Expression<Func<CardViewModel, T>> data)
+        {
+            MethodCallExpression memberExpression = data.Body as MethodCallExpression;
+            //string name = memberExpression.Member.Name;
+            //PropertyInfo res1 = null;
+            //PropertyInfo[] sourceProps = typeof(CardViewModel).GetProperties();
+
+            //foreach (PropertyInfo sourceProp in sourceProps)
+            //{
+            //    if (sourceProp.GetValue(viewModel).Equals(data.Invoke(viewModel)))
+            //    {
+            //        res1 = sourceProp;
+            //    }
+            //}
+
+            // var res = data.Invoke(viewModel);
+        }
+
+
+        //Member => 直接傳入類別屬性
+        //Constant => 常數使用
+        //Unary => !x.Enabled  => 一元運算等簡單運算
+        //Conditional => 條件式 (三元運算式)
+        //Binary => 當今天有多種條件
+        //MethodCall => 函數呼叫完後的結果
+        //Parameter
+        //New
     }
 }
