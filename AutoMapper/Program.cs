@@ -58,7 +58,7 @@ namespace AutoMapper
 
 
 
-            var data = Mapper.Map<CardModel, CardViewModel>(cardModel);
+            //List<int> ints = new List<int>();
         }
     }
 }
