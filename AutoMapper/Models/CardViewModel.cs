@@ -9,8 +9,10 @@ namespace AutoMapper.Models
 {
     internal class CardViewModel
     {
-        public string Name { get; set; }
+        //public string Name { get; set; }
         public string Id { get; set; }
+        public int intNegate { get; set; }
+        public bool IsHero { get; set; }
         public string Desc { get; set; }
         public string Desc2 { get; set; }
         //public double Attack { get; set; }
@@ -21,9 +23,10 @@ namespace AutoMapper.Models
         //public Effect Effect_4 { get; set; }
         //public EffectDTO Effect_5 { get; set; }
         //public List<string> Crystals { get; set; }
-        //public string[] Crystals2 { get; set; }
+        public string[] Crystals2 { get; set; }
         //public Stack<EffectDTO> Crystals3 { get; set; }
         //public Queue<int> Crystals4 { get; set; }
         //public BClass Crystals5 { get; set; } = new BClass();
+        public AClass Crystals6 { get; set; } = new AClass();
     }
 }

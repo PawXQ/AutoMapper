@@ -33,7 +33,7 @@ namespace AutoMapper.TypesMapping
             {
                 //genericTypes.Add(genericMethod.Invoke(null, new object[] { enumerator.Current }));
                 //typeDefinitionAddMethod.Invoke(genericTypes, new object[] { genericMethod.Invoke(null, new object[] { enumerator.Current }) });
-                typeDefinitionAddMethod.Invoke(genericTypes, new object[] { Mapper.MapCallback(enumerator.Current, genericType) });
+                typeDefinitionAddMethod.Invoke(genericTypes, new object[] { TypeConversionCallback(enumerator.Current, genericType) });
                 //typeDefinitionAddMethod.Invoke(genericTypes, new object[] { genericMethod.Invoke(null, new object[] { Mapper.MapCallback(enumerator.Current, genericType) }) });
             }
             return genericTypes;

@@ -56,7 +56,8 @@ namespace AutoMapper.Extensions
                  type == typeof(double) ||
                  type == typeof(float) ||
                  type == typeof(long) ||
-                 type == typeof(decimal)) &&
+                 type == typeof(decimal) ||
+                 type == typeof(bool)) &&
                 !type.IsGenericType)
             {
                 return true;

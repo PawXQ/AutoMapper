@@ -11,6 +11,7 @@ namespace AutoMapper.Models
     {
         public string Name { get; set; }
         public int Id { get; set; }
+        public bool IsHero { get; set; }
         //public string Desc { get; set; }
         //public decimal Attack { get; set; }
         //public long Defense { get; set; }
@@ -20,9 +21,9 @@ namespace AutoMapper.Models
         //public int Effect_4 { get; set; }
         //public Effect Effect_5 { get; set; }
         //public List<Effect> Crystals { get; set; }
-        //public int[] Crystals2 { get; set; }
+        public int[] Crystals2 { get; set; }
         //public Stack<Effect> Crystals3 { get; set; }
         //public Queue<Effect> Crystals4 { get; set; }
-        //public AClass Crystals5 { get; set; } = new AClass();
+        public AClass Crystals5 { get; set; } = new AClass();
     }
 }

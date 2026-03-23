@@ -30,7 +30,7 @@ namespace AutoMapper.TypesMapping
             while (enumerator.MoveNext())
             {
                 //typeDefinitionEnqueqeMethod.Invoke(genericTypes, new object[] { genericMethod.Invoke(null, new object[] { enumerator.Current }) });
-                typeDefinitionEnqueqeMethod.Invoke(genericTypes, new object[] { Mapper.MapCallback(enumerator.Current, genericType) });
+                typeDefinitionEnqueqeMethod.Invoke(genericTypes, new object[] { TypeConversionCallback(enumerator.Current, genericType) });
             }
 
             return genericTypes;

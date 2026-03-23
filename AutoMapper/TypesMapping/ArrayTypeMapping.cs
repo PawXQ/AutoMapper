@@ -21,7 +21,7 @@ namespace AutoMapper.TypesMapping
             for (int i = 0; i < sourceArray.Length; i++)
             {
                 //destArray.SetValue(parseMethod.Invoke(null, new object[] { sourceArray.GetValue(i) }), i);
-                destArray.SetValue(Mapper.MapCallback(sourceArray.GetValue(i), destGenericType), i);
+                destArray.SetValue(TypeConversionCallback(sourceArray.GetValue(i), destGenericType), i);
             }
 
             return destArray;

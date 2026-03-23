@@ -40,8 +40,9 @@ namespace AutoMapper
 
 
             var cardModel = new CardModel();
-            cardModel.Id = 1;
-            cardModel.Name = "a";
+            cardModel.Id = -1;
+            cardModel.Name = "22";
+            cardModel.IsHero = true;
             //cardModel.Desc = "aaa";
             //cardModel.Attack = 10.123456789101112131415m;
             //cardModel.Defense = 12345678910111213;
@@ -51,7 +52,7 @@ namespace AutoMapper
             //cardModel.Effect_4 = ((int)Effect.Battlecry);
             //cardModel.Effect_5 = Effect.DivineShield;
             //cardModel.Crystals = new List<Effect> { Effect.angry, Effect.poison };
-            //cardModel.Crystals2 = new int[] { 1, 2 };
+            cardModel.Crystals2 = new int[] { 1, 2 };
             //cardModel.Crystals3 = new Stack<Effect>(new Effect[] { Effect.angry, Effect.poison });
             //cardModel.Crystals4 = new Queue<Effect>(new Effect[] { Effect.angry, Effect.poison });
             //cardModel.Crystals5 = new AClass() { ConverClass = new CClass() { Id = 1, Crystals = new List<string> { "1", "2" } } };
@@ -61,8 +62,19 @@ namespace AutoMapper
             var data = Mapper.Map<CardModel, CardViewModel>(cardModel, x =>
             {
                 x.ForMember(y => y.Id, z => z.Id)
-                 .ForMember(y => y.Name, z => z.Desc)
-                 .ForMember(y => y.Name, z => z.Desc2);
+                //.ForMember(y => y.Name, z => z.Desc)
+                //x.ForMember(y => !y.IsHero, z => z.IsHero)
+                //.ForMember(y => !y.IsHero, z => z.IsHero)
+                //.ForMember(y => -y.Id, z => z.intNegate)
+
+                .ForMember(y => ReturnInt(y), z => z.Desc); //Parameter
+
+                //.ForMember(y => new AClass(), z => z.Crystals6); //New 缺一個 parameter
+
+                //.ForMember(y => y.Id + int.Parse("30"), z => z.Desc);
+                //.ForMember(y => y.IsHero ? "HELLO" : y.Name, z => z.Desc);
+                //.ForMember(y => int.Parse(y.Name), z => z.Desc);
+                //.ForMember(y => 50, z => z.Desc2);
             });
 
             //var data = Mapper.Map<CardModel, CardViewModel>(cardModel,cfg=>{
@@ -79,6 +91,10 @@ namespace AutoMapper
             //GetCard(data, x => x.Id);
         }
 
+        private static int ReturnInt(CardModel cardModel)
+        {
+            return cardModel.Id + 1;
+        }
 
 
         private static void GetCard<T>(CardViewModel viewModel, Expression<Func<CardViewModel, T>> data)
@@ -100,12 +116,12 @@ namespace AutoMapper
         }
 
 
-        //Member => 直接傳入類別屬性
-        //Constant => 常數使用
+        //Member  O=> 直接傳入類別屬性
+        //Constant  O=> 常數使用
         //Unary => !x.Enabled  => 一元運算等簡單運算
+        //MethodCall => 函數呼叫完後的結果
         //Conditional => 條件式 (三元運算式)
         //Binary => 當今天有多種條件
-        //MethodCall => 函數呼叫完後的結果
         //Parameter
         //New
     }
