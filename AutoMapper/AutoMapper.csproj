@@ -45,7 +45,18 @@
   <ItemGroup>
     <Compile Include="Enums\Effect.cs" />
     <Compile Include="Enums\EffectDTO.cs" />
+    <Compile Include="Enums\ExpressionEnum.cs" />
     <Compile Include="Enums\TypeEnum.cs" />
+    <Compile Include="ExpressionMapping\AExpressionMapping.cs" />
+    <Compile Include="ExpressionMapping\ConstantExpressionMapping.cs" />
+    <Compile Include="ExpressionMapping\MemberExpressionMapping.cs" />
+    <Compile Include="ExpressionMapping\MethodCallExpressionMapping.cs" />
+    <Compile Include="ExpressionMapping\ConditionalExpressionMapping.cs" />
+    <Compile Include="ExpressionMapping\BinaryExpressionMapping.cs" />
+    <Compile Include="ExpressionMapping\ParameterExpressionMapping.cs" />
+    <Compile Include="ExpressionMapping\NewExpressionMapping.cs" />
+    <Compile Include="ExpressionMapping\UnaryExpressionMapping.cs" />
+    <Compile Include="Extensions\ExpressionExtension.cs" />
     <Compile Include="Extensions\TypeExtension.cs" />
     <Compile Include="Mapper.cs" />
     <None Include="Mapper.cs.bak" />
@@ -56,6 +67,7 @@
     <Compile Include="Models\CardViewModel.cs" />
     <Compile Include="Models\CClass.cs" />
     <Compile Include="Models\DClass.cs" />
+    <Compile Include="Models\ExpressionModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TypesMapping\ArrayTypeMapping.cs" />

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoMapper.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -11,7 +12,7 @@ namespace AutoMapper
 {
     internal class MapperConfiguration<TSource, TDest>
     {
-        public Dictionary<PropertyInfo, Expression> propertyInfoMemberExpressionkeyValuePairs = new Dictionary<PropertyInfo, Expression>();
+        public Dictionary<PropertyInfo, ExpressionModel> propertyInfoExpressionModelkeyValuePairs = new Dictionary<PropertyInfo, ExpressionModel>();
 
         public MapperConfiguration<TSource, TDest> ForMember<TSourceProp, TDestProp>(Expression<Func<TSource, TSourceProp>> tSourceCallback,
                                                                                      Expression<Func<TDest, TDestProp>> tDestCallback)
@@ -20,15 +21,7 @@ namespace AutoMapper
             string tDestCallbackMemberExpressionMemberName = tDestCallbackMemberExpression.Member.Name;
             PropertyInfo tDestCallbackMemberExpressionMemberNamePropertyInfo = typeof(TDest).GetProperty(tDestCallbackMemberExpressionMemberName);
 
-            if (tSourceCallback.Body is MemberExpression) this.propertyInfoMemberExpressionkeyValuePairs[tDestCallbackMemberExpressionMemberNamePropertyInfo] = tSourceCallback.Body;
-            else if (tSourceCallback.Body is ConstantExpression) this.propertyInfoMemberExpressionkeyValuePairs[tDestCallbackMemberExpressionMemberNamePropertyInfo] = tSourceCallback.Body;
-            else if (tSourceCallback.Body is UnaryExpression) this.propertyInfoMemberExpressionkeyValuePairs[tDestCallbackMemberExpressionMemberNamePropertyInfo] = tSourceCallback.Body;
-            else if (tSourceCallback.Body is MethodCallExpression) this.propertyInfoMemberExpressionkeyValuePairs[tDestCallbackMemberExpressionMemberNamePropertyInfo] = tSourceCallback.Body;
-            else if (tSourceCallback.Body is ConditionalExpression) this.propertyInfoMemberExpressionkeyValuePairs[tDestCallbackMemberExpressionMemberNamePropertyInfo] = tSourceCallback.Body;
-            else if (tSourceCallback.Body is BinaryExpression) this.propertyInfoMemberExpressionkeyValuePairs[tDestCallbackMemberExpressionMemberNamePropertyInfo] = tSourceCallback.Body;
-            else if (tSourceCallback.Body is NewExpression) this.propertyInfoMemberExpressionkeyValuePairs[tDestCallbackMemberExpressionMemberNamePropertyInfo] = tSourceCallback.Body;
-
-            //ConstantExpression constantExpression1 = callback1 as ConstantExpression;
+            this.propertyInfoExpressionModelkeyValuePairs[tDestCallbackMemberExpressionMemberNamePropertyInfo] = new ExpressionModel(tSourceCallback.Body);
 
             return this;
         }

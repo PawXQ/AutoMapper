@@ -65,14 +65,11 @@ namespace AutoMapper
                 //.ForMember(y => y.Name, z => z.Desc)
                 //x.ForMember(y => !y.IsHero, z => z.IsHero)
                 //.ForMember(y => !y.IsHero, z => z.IsHero)
-                //.ForMember(y => -y.Id, z => z.intNegate)
-
-                .ForMember(y => ReturnInt(y), z => z.Desc); //Parameter
-
-                //.ForMember(y => new AClass(), z => z.Crystals6); //New 缺一個 parameter
-
-                //.ForMember(y => y.Id + int.Parse("30"), z => z.Desc);
-                //.ForMember(y => y.IsHero ? "HELLO" : y.Name, z => z.Desc);
+                .ForMember(y => -y.Id, z => z.intNegate)
+                //.ForMember(y => ReturnInt(y), z => z.Desc) //Parameter
+                //.ForMember(y => new AClass(), z => z.Crystals6); // New 缺一個 parameter
+                .ForMember(y => y.Id + int.Parse("29") - 30, z => z.Desc); // Biniary
+                //.ForMember(y => y.IsHero ? "HELLO" : y.Name, z => z.Desc2); // Condition
                 //.ForMember(y => int.Parse(y.Name), z => z.Desc);
                 //.ForMember(y => 50, z => z.Desc2);
             });
