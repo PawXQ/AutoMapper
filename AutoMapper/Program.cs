@@ -98,26 +98,6 @@ namespace AutoMapper
             return num1 + num2;
         }
 
-
-        private static void GetCard<T>(CardViewModel viewModel, Expression<Func<CardViewModel, T>> data)
-        {
-            MethodCallExpression memberExpression = data.Body as MethodCallExpression;
-            //string name = memberExpression.Member.Name;
-            //PropertyInfo res1 = null;
-            //PropertyInfo[] sourceProps = typeof(CardViewModel).GetProperties();
-
-            //foreach (PropertyInfo sourceProp in sourceProps)
-            //{
-            //    if (sourceProp.GetValue(viewModel).Equals(data.Invoke(viewModel)))
-            //    {
-            //        res1 = sourceProp;
-            //    }
-            //}
-
-            // var res = data.Invoke(viewModel);
-        }
-
-
         //Member  O=> 直接傳入類別屬性
         //Constant  O=> 常數使用
         //Unary => !x.Enabled  => 一元運算等簡單運算
