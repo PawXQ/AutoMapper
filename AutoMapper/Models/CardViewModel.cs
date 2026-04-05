@@ -26,7 +26,7 @@ namespace AutoMapper.Models
         public string[] Crystals2 { get; set; }
         //public Stack<EffectDTO> Crystals3 { get; set; }
         //public Queue<int> Crystals4 { get; set; }
-        //public BClass Crystals5 { get; set; } = new BClass();
-        public AClass Crystals6 { get; set; } = new AClass();
+        public BClass Crystals5 { get; set; } = new BClass();
+        //public AClass Crystals6 { get; set; } = new AClass();
     }
 }

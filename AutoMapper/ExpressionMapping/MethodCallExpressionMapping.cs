@@ -22,22 +22,16 @@ namespace AutoMapper.ExpressionMapping
                 methodCallExpressionValues.Add(methodCallExpressionValue);
             }
 
-            object obj = methodCallExpression.Method.Invoke(datasource, methodCallExpressionValues.ToArray());
+            if (methodCallExpression.Arguments.Count == 0)
+            {
+                object data = GetExpressionValue(datasource, methodCallExpression.Object);
+                return methodCallExpression.Method.Invoke(data, new object[] { });
+            }
+
+            object obj = methodCallExpression.Method.Invoke(null, methodCallExpressionValues.ToArray());
 
             return obj;
 
-
-            //var temp = TestExp<CardViewModel>(x => TestMethod(x.Name, 20, new AClass()));
         }
-
-        //private T TestExp<T>(Expression<Func<CardModel, T>> expression)
-        //{
-
-        //}
-
-        //private CardViewModel TestMethod(string str, int num, AClass aclss)
-        //{
-
-        //}
     }
 }

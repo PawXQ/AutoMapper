@@ -55,22 +55,22 @@ namespace AutoMapper
             cardModel.Crystals2 = new int[] { 1, 2 };
             //cardModel.Crystals3 = new Stack<Effect>(new Effect[] { Effect.angry, Effect.poison });
             //cardModel.Crystals4 = new Queue<Effect>(new Effect[] { Effect.angry, Effect.poison });
-            //cardModel.Crystals5 = new AClass() { ConverClass = new CClass() { Id = 1, Crystals = new List<string> { "1", "2" } } };
+            cardModel.Crystals5 = new AClass() { ConverClass = new CClass() { Id = 1, Crystals = new List<string> { "1", "2" } } };
 
 
             //var data = Mapper.Map<CardModel, CardViewModel>(cardModel);
             var data = Mapper.Map<CardModel, CardViewModel>(cardModel, x =>
             {
-                x.ForMember(y => y.Id, z => z.Id)
+                x.ForMember(y => y.Id.ToString(), z => z.Id)
                 //.ForMember(y => y.Name, z => z.Desc)
                 //x.ForMember(y => !y.IsHero, z => z.IsHero)
                 //.ForMember(y => !y.IsHero, z => z.IsHero)
-                .ForMember(y => -y.Id, z => z.intNegate)
+                //.ForMember(y => -y.Id, z => z.intNegate)
                 //.ForMember(y => ReturnInt(y), z => z.Desc) //Parameter
-                //.ForMember(y => new AClass(), z => z.Crystals6); // New 缺一個 parameter
-                .ForMember(y => y.Id + int.Parse("29") - 30, z => z.Desc); // Biniary
+                //.ForMember(y => new AClass(), z => z.Crystals5); // New
+                //.ForMember(y => y.Id + MultiArgu(29, 28) - 30 + -y.Id - (2 * y.Id + 'a'), z => z.Desc2); // Biniary
                 //.ForMember(y => y.IsHero ? "HELLO" : y.Name, z => z.Desc2); // Condition
-                //.ForMember(y => int.Parse(y.Name), z => z.Desc);
+                .ForMember(y => int.Parse(y.Name), z => z.Desc);
                 //.ForMember(y => 50, z => z.Desc2);
             });
 
@@ -91,6 +91,11 @@ namespace AutoMapper
         private static int ReturnInt(CardModel cardModel)
         {
             return cardModel.Id + 1;
+        }
+
+        private static int MultiArgu(int num1, int num2)
+        {
+            return num1 + num2;
         }
 
 

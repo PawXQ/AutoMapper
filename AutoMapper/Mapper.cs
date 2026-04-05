@@ -17,7 +17,7 @@ namespace AutoMapper
 {
     internal class Mapper
     {
-        public static TDestination Map<Tsource, TDestination>(Tsource source, Action<MapperConfiguration<Tsource, TDestination>> callback) where TDestination : class, new()
+        public static TDestination Map<Tsource, TDestination>(Tsource source, Action<MapperConfiguration<Tsource, TDestination>> callback = null) where TDestination : class, new()
         {
             TDestination destination = new TDestination();
 
@@ -25,7 +25,10 @@ namespace AutoMapper
             Type sourceType = typeof(Tsource);
 
             MapperConfiguration<Tsource, TDestination> mapperConfiguration = new MapperConfiguration<Tsource, TDestination>();
-            callback.Invoke(mapperConfiguration);
+            if (callback != null)
+            {
+                callback.Invoke(mapperConfiguration);
+            }
 
             foreach (PropertyInfo prop in destProps)
             {
@@ -61,8 +64,6 @@ namespace AutoMapper
                     typeConversionResult = aTypeMapping.TypeConversion(destObjectValue, sourceTypePropertyInfoType, destProptyType);
                 }
 
-                // 轉換 Tsource.X => TDestination.y return propertyinfo
-                // 找 TDestination property index
                 prop.SetValue(destination, typeConversionResult);
             }
 

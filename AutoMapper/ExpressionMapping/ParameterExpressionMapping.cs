@@ -11,7 +11,7 @@ namespace AutoMapper.ExpressionMapping
     {
         public override object _GetExpressionValue(object datasource, Expression expression)
         {
-            throw new NotImplementedException();
+            return datasource;
         }
     }
 }

@@ -15,6 +15,7 @@ namespace AutoMapper.TypesMapping
     {
         public override object TypeConversion(object sourceData, Type sourceType, Type destType)
         {
+            if (sourceData == null) return null;
             //var data = Mapper.Map<souceType, CardViewModel>(cardModel);
 
             //MethodInfo mapperMapMethod = typeof(Mapper).GetMethod("Map", new Type[] { sourceType });
@@ -22,7 +23,7 @@ namespace AutoMapper.TypesMapping
                                                        .First(x => x.Name == "Map");
             MethodInfo mapperMapGenericMethod = mapperMapMethod.MakeGenericMethod(sourceType, destType);
 
-            return mapperMapGenericMethod.Invoke(null, new object[] { sourceData });
+            return mapperMapGenericMethod.Invoke(null, new object[] { sourceData, null });
 
             //souceType.MakeGenericType(destType);
 

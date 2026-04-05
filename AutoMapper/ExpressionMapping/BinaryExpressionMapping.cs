@@ -20,6 +20,7 @@ namespace AutoMapper.ExpressionMapping
 
             if (binaryExpression.NodeType == ExpressionType.Add) { obj = (int)objLeft + (int)objRight; }
             else if (binaryExpression.NodeType == ExpressionType.Subtract) { obj = (int)objLeft - (int)objRight; }
+            else if (binaryExpression.NodeType == ExpressionType.Multiply) { obj = (int)objLeft * (int)objRight; }
 
             return obj;
         }
